@@ -31,20 +31,19 @@
   .glass { background: rgba(18,18,26,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(124,106,240,0.12); }
   .glass-light { background: rgba(30,30,50,0.6); backdrop-filter: blur(12px); border: 1px solid rgba(124,106,240,0.1); }
   .btn-primary { background: linear-gradient(135deg, #7c6af0, #5a4fd8); transition: all 0.2s; }
-  .btn-primary:hover { background: linear-gradient(135deg, #a89af7, #7c6af0); transform: translateY(-1px); }
   .btn-primary:active { transform: scale(0.97); }
-  .btn-migraine { background: linear-gradient(135deg, #f0546a, #c73a50); }
-  .btn-migraine:hover { background: linear-gradient(135deg, #f87d8e, #f0546a); transform: translateY(-1px); }
-  .btn-prostate { background: linear-gradient(135deg, #f09654, #c77830); }
-  .btn-prostate:hover { background: linear-gradient(135deg, #f7b47d, #f09654); transform: translateY(-1px); }
+  .btn-migraine { background: linear-gradient(135deg, #f0546a, #c73a50); transition: all 0.2s; }
+  .btn-migraine:active { transform: scale(0.97); }
+  .btn-prostate { background: linear-gradient(135deg, #f09654, #c77830); transition: all 0.2s; }
+  .btn-prostate:active { transform: scale(0.97); }
   .counter-btn { background: rgba(124,106,240,0.15); border: 1px solid rgba(124,106,240,0.25); transition: all 0.15s; }
-  .counter-btn:hover { background: rgba(124,106,240,0.3); } .counter-btn:active { transform: scale(0.93); }
-  .tracker-card { background: rgba(22,22,38,0.9); border: 1px solid rgba(124,106,240,0.1); transition: all 0.2s; }
+  .counter-btn:active { transform: scale(0.93); }
+  .tracker-card { background: rgba(22,22,38,0.9); border: 1px solid rgba(124,106,240,0.1); transition: border-color 0.2s; }
   .tracker-card:hover { border-color: rgba(124,106,240,0.3); }
-  .cal-cell { width: 12px; height: 12px; border-radius: 2px; transition: all 0.15s; }
+  .cal-cell { width: 12px; height: 12px; border-radius: 2px; transition: transform 0.15s; cursor: pointer; }
   .cal-cell:hover { transform: scale(1.3); }
-  .modal-overlay { background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); }
-  input[type=range] { -webkit-appearance: none; background: rgba(124,106,240,0.2); height: 6px; border-radius: 3px; outline: none; }
+  .modal-overlay { background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); }
+  input[type=range] { -webkit-appearance: none; background: rgba(124,106,240,0.2); height: 6px; border-radius: 3px; outline: none; width: 100%; }
   input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #7c6af0; cursor: pointer; box-shadow: 0 2px 8px rgba(124,106,240,0.5); }
   .tag-badge { background: rgba(124,106,240,0.2); border: 1px solid rgba(124,106,240,0.3); border-radius: 8px; padding: 2px 8px; font-size: 11px; }
   .migraine-badge { background: rgba(240,84,106,0.2); border: 1px solid rgba(240,84,106,0.3); color: #f87d8e; }
@@ -52,17 +51,24 @@
   .section-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(124,106,240,0.3), transparent); }
   @supports (padding-top: env(safe-area-inset-top)) {
     .safe-top { padding-top: calc(env(safe-area-inset-top) + 12px); }
-    .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+    .safe-bottom { padding-bottom: calc(env(safe-area-inset-bottom) + 4px); }
   }
   .animate-fadeIn { animation: fadeIn 0.25s ease-out; }
   @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
   .animate-slideUp { animation: slideUp 0.3s cubic-bezier(0.34,1.56,0.64,1); }
   @keyframes slideUp { from { opacity:0; transform:translateY(40px) scale(0.96); } to { opacity:1; transform:translateY(0) scale(1); } }
   select option { background: #1a1a26; color: #e2e8f0; }
-  .nav-item { transition: all 0.2s; opacity: 0.5; }
-  .nav-item.active { opacity: 1; color: #a89af7; }
+  .nav-item { transition: all 0.2s; opacity: 0.45; }
+  .nav-item.active { opacity: 1; }
+  .nav-item.active .nav-label { color: #a89af7; }
   .pulse-dot { width:8px; height:8px; background:#f0546a; border-radius:50%; animation: pulse 2s infinite; }
   @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.2)} }
+  .filter-btn { background: rgba(124,106,240,0.1); border: 1px solid rgba(124,106,240,0.2); border-radius: 10px; padding: 5px 14px; font-size: 12px; color: #94a3b8; transition: all 0.15s; cursor: pointer; }
+  .filter-btn.active { background: rgba(124,106,240,0.3); border-color: rgba(124,106,240,0.5); color: #a89af7; font-weight: 600; }
+  .activity-btn { background: rgba(124,106,240,0.08); border: 1px solid rgba(124,106,240,0.15); border-radius: 10px; padding: 5px 10px; font-size: 12px; color: #94a3b8; transition: all 0.15s; cursor: pointer; }
+  .activity-btn.active { background: rgba(124,106,240,0.28); border-color: #7c6af0; color: #a89af7; font-weight: 600; }
+  .hist-card { cursor: pointer; transition: all 0.15s; }
+  .hist-card:active { transform: scale(0.98); }
 </style>
 </head>
 <body class="min-h-screen text-slate-100">
@@ -88,221 +94,250 @@
 </header>
 
 <!-- MAIN -->
-<main class="max-w-lg mx-auto px-4 pb-24 pt-4 space-y-4">
+<main class="max-w-lg mx-auto px-4 pb-28 pt-4">
 
-  <!-- TODAY DATE PILL -->
-  <div class="flex items-center gap-3">
+  <!-- DATE PILL -->
+  <div class="flex items-center gap-3 mb-4">
     <div id="todayPill" class="glass-light px-4 py-2 rounded-2xl text-sm font-medium text-accent-light"></div>
     <div class="flex-1 section-divider"></div>
   </div>
 
-  <!-- DAILY FACTORS CARD -->
-  <div class="glass rounded-3xl p-5 animate-fadeIn">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="font-semibold text-sm uppercase tracking-widest text-slate-400">Ежедневные факторы</h2>
-      <div class="text-lg">📊</div>
-    </div>
+  <!-- ═══ TAB: СЕГОДНЯ ═══ -->
+  <div id="tabToday" class="space-y-4">
 
-    <!-- SLEEP -->
-    <div class="tracker-card rounded-2xl p-4 mb-3">
-      <div class="flex items-center justify-between mb-2">
-        <div class="flex items-center gap-2">
-          <span class="text-xl">😴</span>
-          <div>
-            <div class="text-sm font-medium">Сон</div>
-            <div class="text-xs text-slate-400">часы</div>
+    <!-- DAILY FACTORS -->
+    <div class="glass rounded-3xl p-5 animate-fadeIn">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="font-semibold text-sm uppercase tracking-widest text-slate-400">Ежедневные факторы</h2>
+        <span class="text-lg">📊</span>
+      </div>
+
+      <!-- SLEEP -->
+      <div class="tracker-card rounded-2xl p-4 mb-3">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">😴</span>
+            <div><div class="text-sm font-medium">Сон</div><div class="text-xs text-slate-400">часы</div></div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="adjustTracker('sleep',-0.5)" class="counter-btn w-8 h-8 rounded-xl text-lg font-bold text-slate-300 flex items-center justify-center">−</button>
+            <div id="sleepVal" class="text-2xl font-bold text-accent-light w-14 text-center">7.0</div>
+            <button onclick="adjustTracker('sleep',0.5)" class="counter-btn w-8 h-8 rounded-xl text-lg font-bold text-slate-300 flex items-center justify-center">+</button>
           </div>
         </div>
-        <div class="flex items-center gap-2">
-          <button onclick="adjustTracker('sleep',-0.5)" class="counter-btn w-8 h-8 rounded-xl text-lg font-bold text-slate-300 flex items-center justify-center">−</button>
-          <div id="sleepVal" class="text-2xl font-bold text-accent-light w-14 text-center">7.0</div>
-          <button onclick="adjustTracker('sleep',0.5)" class="counter-btn w-8 h-8 rounded-xl text-lg font-bold text-slate-300 flex items-center justify-center">+</button>
+        <div class="flex gap-1.5 flex-wrap">
+          <button onclick="setTracker('sleep',5)" class="tag-badge cursor-pointer">5ч</button>
+          <button onclick="setTracker('sleep',6)" class="tag-badge cursor-pointer">6ч</button>
+          <button onclick="setTracker('sleep',7)" class="tag-badge cursor-pointer">7ч</button>
+          <button onclick="setTracker('sleep',8)" class="tag-badge cursor-pointer">8ч</button>
+          <button onclick="setTracker('sleep',9)" class="tag-badge cursor-pointer">9ч</button>
         </div>
       </div>
-      <div class="flex gap-1.5 flex-wrap">
-        <button onclick="setTracker('sleep',5)" class="tag-badge cursor-pointer hover:bg-accent/30 transition-colors">5ч</button>
-        <button onclick="setTracker('sleep',6)" class="tag-badge cursor-pointer hover:bg-accent/30 transition-colors">6ч</button>
-        <button onclick="setTracker('sleep',7)" class="tag-badge cursor-pointer hover:bg-accent/30 transition-colors">7ч</button>
-        <button onclick="setTracker('sleep',8)" class="tag-badge cursor-pointer hover:bg-accent/30 transition-colors">8ч</button>
-        <button onclick="setTracker('sleep',9)" class="tag-badge cursor-pointer hover:bg-accent/30 transition-colors">9ч</button>
-      </div>
-    </div>
 
-    <!-- COFFEE -->
-    <div class="tracker-card rounded-2xl p-4 mb-3">
-      <div class="flex items-center justify-between mb-2">
-        <div class="flex items-center gap-2">
-          <span class="text-xl">☕</span>
-          <div>
-            <div class="text-sm font-medium">Кофе</div>
-            <div class="text-xs text-slate-400">чашки</div>
+      <!-- COFFEE -->
+      <div class="tracker-card rounded-2xl p-4 mb-3">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">☕</span>
+            <div><div class="text-sm font-medium">Кофе</div><div class="text-xs text-slate-400">чашки</div></div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="adjustTracker('coffee',-1)" class="counter-btn w-8 h-8 rounded-xl text-lg font-bold text-slate-300 flex items-center justify-center">−</button>
+            <div id="coffeeVal" class="text-2xl font-bold text-amber-400 w-14 text-center">1</div>
+            <button onclick="adjustTracker('coffee',1)" class="counter-btn w-8 h-8 rounded-xl text-lg font-bold text-slate-300 flex items-center justify-center">+</button>
           </div>
         </div>
-        <div class="flex items-center gap-2">
-          <button onclick="adjustTracker('coffee',-1)" class="counter-btn w-8 h-8 rounded-xl text-lg font-bold text-slate-300 flex items-center justify-center">−</button>
-          <div id="coffeeVal" class="text-2xl font-bold text-amber-400 w-14 text-center">1</div>
-          <button onclick="adjustTracker('coffee',1)" class="counter-btn w-8 h-8 rounded-xl text-lg font-bold text-slate-300 flex items-center justify-center">+</button>
+        <div class="flex gap-1.5">
+          <button onclick="setTracker('coffee',0)" class="tag-badge cursor-pointer">0</button>
+          <button onclick="setTracker('coffee',1)" class="tag-badge cursor-pointer">1</button>
+          <button onclick="setTracker('coffee',2)" class="tag-badge cursor-pointer">2</button>
+          <button onclick="setTracker('coffee',3)" class="tag-badge cursor-pointer">3+</button>
         </div>
       </div>
-      <div class="flex gap-1.5">
-        <button onclick="setTracker('coffee',0)" class="tag-badge cursor-pointer hover:bg-accent/30 transition-colors">0</button>
-        <button onclick="setTracker('coffee',1)" class="tag-badge cursor-pointer hover:bg-accent/30 transition-colors">1</button>
-        <button onclick="setTracker('coffee',2)" class="tag-badge cursor-pointer hover:bg-accent/30 transition-colors">2</button>
-        <button onclick="setTracker('coffee',3)" class="tag-badge cursor-pointer hover:bg-accent/30 transition-colors">3+</button>
-      </div>
-    </div>
 
-    <!-- WATER -->
-    <div class="tracker-card rounded-2xl p-4 mb-3">
-      <div class="flex items-center justify-between mb-2">
-        <div class="flex items-center gap-2">
-          <span class="text-xl">💧</span>
-          <div>
-            <div class="text-sm font-medium">Вода</div>
-            <div class="text-xs text-slate-400">литры</div>
+      <!-- WATER -->
+      <div class="tracker-card rounded-2xl p-4 mb-3">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">💧</span>
+            <div><div class="text-sm font-medium">Вода</div><div class="text-xs text-slate-400">литры</div></div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="adjustTracker('water',-0.25)" class="counter-btn w-8 h-8 rounded-xl text-lg font-bold text-slate-300 flex items-center justify-center">−</button>
+            <div id="waterVal" class="text-2xl font-bold text-sky-400 w-14 text-center">1.5</div>
+            <button onclick="adjustTracker('water',0.25)" class="counter-btn w-8 h-8 rounded-xl text-lg font-bold text-slate-300 flex items-center justify-center">+</button>
           </div>
         </div>
-        <div class="flex items-center gap-2">
-          <button onclick="adjustTracker('water',-0.25)" class="counter-btn w-8 h-8 rounded-xl text-lg font-bold text-slate-300 flex items-center justify-center">−</button>
-          <div id="waterVal" class="text-2xl font-bold text-sky-400 w-14 text-center">1.5</div>
-          <button onclick="adjustTracker('water',0.25)" class="counter-btn w-8 h-8 rounded-xl text-lg font-bold text-slate-300 flex items-center justify-center">+</button>
+        <div class="mt-1 bg-slate-700/40 rounded-full h-2">
+          <div id="waterBar" class="h-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 transition-all duration-300" style="width:37.5%"></div>
+        </div>
+        <div class="text-xs text-slate-500 mt-1">Рекомендуется 2.0 л</div>
+      </div>
+
+      <!-- STRESS -->
+      <div class="tracker-card rounded-2xl p-4 mb-3">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">🧠</span>
+            <div><div class="text-sm font-medium">Стресс</div><div class="text-xs text-slate-400">уровень 1–10</div></div>
+          </div>
+          <div id="stressVal" class="text-2xl font-bold text-purple-400 w-14 text-center">3</div>
+        </div>
+        <input type="range" min="1" max="10" value="3" id="stressRange" oninput="setStress(this.value)">
+        <div class="flex justify-between text-xs text-slate-500 mt-1 px-0.5">
+          <span>Спокойно</span><span>Умеренно</span><span>Критично</span>
         </div>
       </div>
-      <!-- water progress -->
-      <div class="mt-1 bg-slate-700/40 rounded-full h-2">
-        <div id="waterBar" class="h-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 transition-all duration-300" style="width:37.5%"></div>
-      </div>
-      <div class="text-xs text-slate-500 mt-1">Рекомендуется 2.0 л</div>
-    </div>
 
-    <!-- STRESS -->
-    <div class="tracker-card rounded-2xl p-4 mb-3">
-      <div class="flex items-center justify-between mb-2">
-        <div class="flex items-center gap-2">
-          <span class="text-xl">🧠</span>
-          <div>
-            <div class="text-sm font-medium">Стресс</div>
-            <div class="text-xs text-slate-400">уровень 1–10</div>
+      <!-- ACTIVITY -->
+      <div class="tracker-card rounded-2xl p-4 mb-3">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-xl">🏃</span>
+          <div class="text-sm font-medium">Физическая активность</div>
+        </div>
+        <div class="flex gap-2 flex-wrap">
+          <button onclick="setActivity('none')" id="act-none" class="activity-btn">😑 Нет</button>
+          <button onclick="setActivity('walk')" id="act-walk" class="activity-btn">🚶 Прогулка</button>
+          <button onclick="setActivity('light')" id="act-light" class="activity-btn">🧘 Лёгкая</button>
+          <button onclick="setActivity('gym')" id="act-gym" class="activity-btn">💪 Тренировка</button>
+        </div>
+      </div>
+
+      <!-- WEATHER -->
+      <div class="tracker-card rounded-2xl p-4 mb-3">
+        <div class="flex items-center gap-3">
+          <span class="text-xl">🌤</span>
+          <div class="flex-1">
+            <div class="text-sm font-medium mb-1">Погода</div>
+            <select id="weatherSel" onchange="setWeather(this.value)" class="w-full bg-dark-600 text-slate-200 text-sm rounded-xl px-3 py-2 border border-slate-600/50 outline-none focus:border-accent/50 transition-colors">
+              <option value="">— выбрать —</option>
+              <option value="sunny">☀️ Ясно</option>
+              <option value="cloudy">⛅ Облачно</option>
+              <option value="rain">🌧 Осадки</option>
+              <option value="pressure">🌪 Перепад давления</option>
+            </select>
           </div>
         </div>
-        <div id="stressVal" class="text-2xl font-bold text-purple-400 w-14 text-center">3</div>
       </div>
-      <input type="range" min="1" max="10" value="3" id="stressRange" oninput="setStress(this.value)" class="w-full">
-      <div class="flex justify-between text-xs text-slate-500 mt-1 px-0.5">
-        <span>Спокойно</span><span>Умеренно</span><span>Критично</span>
-      </div>
-    </div>
 
-    <!-- WEATHER -->
-    <div class="tracker-card rounded-2xl p-4">
-      <div class="flex items-center gap-3">
-        <span class="text-xl">🌤</span>
-        <div class="flex-1">
-          <div class="text-sm font-medium mb-1">Погода</div>
-          <select id="weatherSel" onchange="setWeather(this.value)" class="w-full bg-dark-600 text-slate-200 text-sm rounded-xl px-3 py-2 border border-slate-600/50 outline-none focus:border-accent/50 transition-colors">
-            <option value="">— выбрать —</option>
-            <option value="sunny">☀️ Ясно</option>
-            <option value="cloudy">⛅ Облачно</option>
-            <option value="rain">🌧 Осадки</option>
-            <option value="pressure">🌪 Перепад давления</option>
-          </select>
+      <!-- NOTES -->
+      <div class="tracker-card rounded-2xl p-4 mb-3">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-xl">📝</span>
+          <div class="text-sm font-medium">Заметки о самочувствии</div>
         </div>
+        <textarea id="dayNotes" rows="2" placeholder="Как себя чувствуете сегодня?" oninput="setNotes(this.value)" class="w-full bg-dark-600/60 border border-slate-600/30 rounded-xl px-3 py-2 text-sm text-slate-200 placeholder-slate-600 outline-none focus:border-accent/40 transition-colors resize-none"></textarea>
       </div>
-    </div>
-  </div>
 
-  <!-- EVENTS CARD -->
-  <div class="glass rounded-3xl p-5 animate-fadeIn">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="font-semibold text-sm uppercase tracking-widest text-slate-400">Фиксация приступов</h2>
-      <div class="text-lg">⚡</div>
-    </div>
-    <div class="flex gap-3">
-      <button onclick="openForm('migraine')" class="btn-migraine flex-1 rounded-2xl py-3.5 px-4 text-sm font-semibold text-white shadow-lg transition-all active:scale-95">
-        🧊 Мигрень
+      <button onclick="saveDayManual()" class="w-full btn-primary rounded-2xl py-3 text-sm font-semibold text-white shadow-lg">
+        ✓ Сохранить данные дня
       </button>
-      <button onclick="openForm('prostate')" class="btn-prostate flex-1 rounded-2xl py-3.5 px-4 text-sm font-semibold text-white shadow-lg transition-all active:scale-95">
-        🔴 Простата
-      </button>
     </div>
-    <div id="todayEvents" class="mt-3 space-y-2"></div>
-  </div>
 
-  <!-- CALENDAR SECTION -->
-  <div class="glass rounded-3xl p-5 animate-fadeIn">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="font-semibold text-sm uppercase tracking-widest text-slate-400">Активность</h2>
-      <div id="calLegend" class="flex items-center gap-2 text-xs text-slate-500">
-        <span class="inline-block w-3 h-3 rounded-sm bg-slate-700"></span>нет
-        <span class="inline-block w-3 h-3 rounded-sm bg-accent/60"></span>данные
-        <span class="inline-block w-3 h-3 rounded-sm bg-migraine/70"></span>мигрень
-        <span class="inline-block w-3 h-3 rounded-sm bg-prostate/70"></span>простата
+    <!-- EVENTS CARD -->
+    <div class="glass rounded-3xl p-5 animate-fadeIn">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="font-semibold text-sm uppercase tracking-widest text-slate-400">Фиксация приступов</h2>
+        <span class="text-lg">⚡</span>
       </div>
+      <div class="flex gap-3">
+        <button onclick="openForm('migraine')" class="btn-migraine flex-1 rounded-2xl py-3.5 px-4 text-sm font-semibold text-white shadow-lg active:scale-95">
+          🧊 Мигрень
+        </button>
+        <button onclick="openForm('prostate')" class="btn-prostate flex-1 rounded-2xl py-3.5 px-4 text-sm font-semibold text-white shadow-lg active:scale-95">
+          🔴 Простата
+        </button>
+      </div>
+      <div id="todayEvents" class="mt-3 space-y-2"></div>
     </div>
-    <div id="calGrid" class="overflow-x-auto pb-1">
-      <!-- generated by JS -->
-    </div>
-    <div class="flex gap-2 mt-3 text-xs text-slate-500 justify-end">
-      <span id="calSummary"></span>
-    </div>
-  </div>
 
-  <!-- HISTORY SECTION -->
-  <div class="glass rounded-3xl p-5 animate-fadeIn">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="font-semibold text-sm uppercase tracking-widest text-slate-400">История записей</h2>
-      <span id="histCount" class="tag-badge text-accent-light">0</span>
+  </div><!-- /tabToday -->
+
+  <!-- ═══ TAB: КАЛЕНДАРЬ ═══ -->
+  <div id="tabCalendar" class="hidden space-y-4">
+    <div class="glass rounded-3xl p-5 animate-fadeIn">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="font-semibold text-sm uppercase tracking-widest text-slate-400">Активность</h2>
+        <div class="flex items-center gap-2 text-xs text-slate-500">
+          <span class="inline-block w-3 h-3 rounded-sm bg-slate-700"></span>нет
+          <span class="inline-block w-3 h-3 rounded-sm bg-accent/60"></span>данные
+          <span class="inline-block w-3 h-3 rounded-sm bg-migraine/70"></span>мигрень
+          <span class="inline-block w-3 h-3 rounded-sm bg-prostate/70"></span>простата
+        </div>
+      </div>
+      <div id="calGrid" class="overflow-x-auto pb-1"></div>
+      <div class="flex justify-end mt-3">
+        <span id="calSummary" class="text-xs text-slate-500"></span>
+      </div>
+      <div class="text-xs text-slate-600 text-center mt-1">Нажмите на день для деталей</div>
     </div>
-    <div id="historyList" class="space-y-2 max-h-96 overflow-y-auto pr-1"></div>
-    <div id="histEmpty" class="text-center text-slate-500 text-sm py-8">Записей пока нет</div>
-  </div>
+  </div><!-- /tabCalendar -->
+
+  <!-- ═══ TAB: ИСТОРИЯ ═══ -->
+  <div id="tabHistory" class="hidden space-y-4">
+
+    <!-- STATS -->
+    <div id="statsBlock" class="glass rounded-3xl p-5 animate-fadeIn"></div>
+
+    <!-- LIST -->
+    <div class="glass rounded-3xl p-5 animate-fadeIn">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="font-semibold text-sm uppercase tracking-widest text-slate-400">Записи</h2>
+        <span id="histCount" class="tag-badge text-accent-light">0</span>
+      </div>
+      <div class="flex gap-2 mb-4">
+        <button onclick="setHistFilter('all')" id="filt-all" class="filter-btn active">Все</button>
+        <button onclick="setHistFilter('migraine')" id="filt-migraine" class="filter-btn">🧊 Мигрень</button>
+        <button onclick="setHistFilter('prostate')" id="filt-prostate" class="filter-btn">🔴 Простата</button>
+      </div>
+      <div id="historyList" class="space-y-2 max-h-[60vh] overflow-y-auto pr-1"></div>
+      <div id="histEmpty" class="text-center text-slate-500 text-sm py-8 hidden">Записей пока нет</div>
+    </div>
+
+  </div><!-- /tabHistory -->
 
 </main>
 
 <!-- BOTTOM NAV -->
 <nav class="fixed bottom-0 left-0 right-0 glass safe-bottom z-40">
   <div class="max-w-lg mx-auto flex justify-around py-2 px-4">
-    <button onclick="scrollTo({top:0,behavior:'smooth'})" class="nav-item active flex flex-col items-center gap-0.5 py-1 px-4 text-xs">
-      <span class="text-lg">📊</span><span>Сегодня</span>
+    <button id="navToday" onclick="switchTab('Today')" class="nav-item active flex flex-col items-center gap-0.5 py-1 px-4 text-xs">
+      <span class="text-lg">📊</span><span class="nav-label">Сегодня</span>
     </button>
-    <button onclick="document.getElementById('calGrid').scrollIntoView({behavior:'smooth'})" class="nav-item flex flex-col items-center gap-0.5 py-1 px-4 text-xs">
-      <span class="text-lg">📅</span><span>Календарь</span>
+    <button id="navCalendar" onclick="switchTab('Calendar')" class="nav-item flex flex-col items-center gap-0.5 py-1 px-4 text-xs">
+      <span class="text-lg">📅</span><span class="nav-label">Календарь</span>
     </button>
-    <button onclick="document.getElementById('historyList').scrollIntoView({behavior:'smooth'})" class="nav-item flex flex-col items-center gap-0.5 py-1 px-4 text-xs">
-      <span class="text-lg">📋</span><span>История</span>
+    <button id="navHistory" onclick="switchTab('History')" class="nav-item flex flex-col items-center gap-0.5 py-1 px-4 text-xs">
+      <span class="text-lg">📋</span><span class="nav-label">История</span>
     </button>
   </div>
 </nav>
 
-<!-- MODAL ATTACK FORM -->
+<!-- MODAL: ATTACK FORM -->
 <div id="modalOverlay" class="modal-overlay fixed inset-0 z-50 flex items-end justify-center hidden" onclick="closeFormOutside(event)">
-  <div id="modalBox" class="glass w-full max-w-lg rounded-t-4xl p-6 pb-10 animate-slideUp">
+  <div class="glass w-full max-w-lg rounded-t-4xl p-6 pb-10 animate-slideUp">
     <div class="w-10 h-1 bg-slate-600 rounded-full mx-auto mb-5"></div>
     <div id="modalTitle" class="text-lg font-bold mb-5"></div>
 
-    <!-- Intensity -->
     <div class="mb-5">
       <div class="flex justify-between items-center mb-2">
         <label class="text-sm text-slate-300">Интенсивность</label>
         <span id="formIntensityVal" class="text-xl font-bold text-accent-light">5</span>
       </div>
-      <input type="range" min="1" max="10" value="5" id="formIntensity" oninput="document.getElementById('formIntensityVal').textContent=this.value" class="w-full">
+      <input type="range" min="1" max="10" value="5" id="formIntensity" oninput="document.getElementById('formIntensityVal').textContent=this.value">
       <div class="flex justify-between text-xs text-slate-500 mt-1"><span>1 — слабо</span><span>10 — нестерпимо</span></div>
     </div>
 
-    <!-- Localization -->
     <div class="mb-4">
       <label class="text-sm text-slate-300 block mb-2">Локализация</label>
       <input id="formLoc" type="text" placeholder="напр. левый висок, паховая область..." class="w-full bg-dark-600 border border-slate-600/50 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 outline-none focus:border-accent/50 transition-colors">
     </div>
 
-    <!-- Medications -->
     <div class="mb-4">
       <label class="text-sm text-slate-300 block mb-2">Лекарства / действия</label>
       <input id="formMeds" type="text" placeholder="напр. Суматриптан 50мг, лёг отдыхать..." class="w-full bg-dark-600 border border-slate-600/50 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 outline-none focus:border-accent/50 transition-colors">
     </div>
 
-    <!-- Comment -->
     <div class="mb-6">
       <label class="text-sm text-slate-300 block mb-2">Комментарий</label>
       <textarea id="formComment" rows="2" placeholder="дополнительные заметки..." class="w-full bg-dark-600 border border-slate-600/50 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 outline-none focus:border-accent/50 transition-colors resize-none"></textarea>
@@ -310,8 +345,18 @@
 
     <div class="flex gap-3">
       <button onclick="closeForm()" class="flex-1 glass-light rounded-2xl py-3.5 text-sm font-medium text-slate-300">Отмена</button>
-      <button id="formSaveBtn" onclick="saveAttack()" class="flex-2 flex-1 rounded-2xl py-3.5 text-sm font-bold text-white transition-all active:scale-95">Сохранить</button>
+      <button id="formSaveBtn" onclick="saveAttack()" class="flex-1 rounded-2xl py-3.5 text-sm font-bold text-white active:scale-95">Сохранить</button>
     </div>
+  </div>
+</div>
+
+<!-- MODAL: DETAIL -->
+<div id="detailOverlay" class="modal-overlay fixed inset-0 z-50 flex items-end justify-center hidden" onclick="closeDetailOutside(event)">
+  <div class="glass w-full max-w-lg rounded-t-4xl p-6 pb-10 animate-slideUp max-h-[88vh] overflow-y-auto">
+    <div class="w-10 h-1 bg-slate-600 rounded-full mx-auto mb-5"></div>
+    <div id="detailTitle" class="text-base font-bold mb-4 text-accent-light"></div>
+    <div id="detailContent"></div>
+    <button onclick="closeDetail()" class="mt-5 w-full glass-light rounded-2xl py-3 text-sm font-medium text-slate-300">Закрыть</button>
   </div>
 </div>
 
@@ -321,63 +366,72 @@
 </div>
 
 <script>
-// ──────────────── DATA LAYER ────────────────
+// ── DATA ──
 const STORAGE_KEY = 'health_diary_v2';
-
 function loadData() {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || { records: [], dailyLogs: {} }; }
   catch { return { records: [], dailyLogs: {} }; }
 }
-
-function saveData(data) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
-
-function getTodayKey() {
-  return new Date().toISOString().slice(0, 10);
-}
-
+function saveData(d) { localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); }
+function getTodayKey() { return new Date().toISOString().slice(0, 10); }
 function getOrCreateDailyLog(data) {
   const key = getTodayKey();
   if (!data.dailyLogs[key]) {
-    data.dailyLogs[key] = { sleep: 7, coffee: 1, water: 1.5, stress: 3, weather: '', updated: new Date().toISOString() };
+    data.dailyLogs[key] = { sleep: 7, coffee: 1, water: 1.5, stress: 3, weather: '', activity: '', notes: '', updated: new Date().toISOString() };
   }
   return data.dailyLogs[key];
 }
 
-// ──────────────── STATE ────────────────
+// ── STATE ──
 let appData = loadData();
 let currentAttackType = null;
+let currentHistFilter = 'all';
 
-// ──────────────── TRACKERS ────────────────
+// ── TABS ──
+function switchTab(name) {
+  ['Today','Calendar','History'].forEach(t => {
+    document.getElementById('tab' + t).classList.add('hidden');
+    document.getElementById('nav' + t).classList.remove('active');
+  });
+  document.getElementById('tab' + name).classList.remove('hidden');
+  document.getElementById('nav' + name).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (name === 'Calendar') buildCalendar();
+  if (name === 'History') { renderStats(); renderHistory(); }
+}
+
+// ── TRACKERS ──
 function adjustTracker(key, delta) {
   const log = getOrCreateDailyLog(appData);
-  let newVal = +(log[key] + delta).toFixed(2);
-  if (key === 'sleep') newVal = Math.max(0, Math.min(24, newVal));
-  if (key === 'coffee') newVal = Math.max(0, Math.min(20, newVal));
-  if (key === 'water') newVal = Math.max(0, Math.min(10, newVal));
-  log[key] = newVal;
+  let v = +(log[key] + delta).toFixed(2);
+  if (key === 'sleep') v = Math.max(0, Math.min(24, v));
+  if (key === 'coffee') v = Math.max(0, Math.min(20, v));
+  if (key === 'water') v = Math.max(0, Math.min(10, v));
+  log[key] = v;
   saveData(appData);
   renderTrackers();
 }
-
 function setTracker(key, val) {
-  const log = getOrCreateDailyLog(appData);
-  log[key] = val;
-  saveData(appData);
-  renderTrackers();
+  getOrCreateDailyLog(appData)[key] = val;
+  saveData(appData); renderTrackers();
 }
-
 function setStress(val) {
-  const log = getOrCreateDailyLog(appData);
-  log.stress = +val;
-  saveData(appData);
-  renderTrackers();
+  getOrCreateDailyLog(appData).stress = +val;
+  saveData(appData); renderTrackers();
 }
-
 function setWeather(val) {
-  const log = getOrCreateDailyLog(appData);
-  log.weather = val;
+  getOrCreateDailyLog(appData).weather = val;
+  saveData(appData);
+}
+function setActivity(val) {
+  getOrCreateDailyLog(appData).activity = val;
+  saveData(appData);
+  ['none','walk','light','gym'].forEach(k =>
+    document.getElementById('act-' + k).classList.toggle('active', k === val)
+  );
+}
+function setNotes(val) {
+  getOrCreateDailyLog(appData).notes = val;
   saveData(appData);
 }
 
@@ -385,54 +439,49 @@ function renderTrackers() {
   const log = getOrCreateDailyLog(appData);
   document.getElementById('sleepVal').textContent = log.sleep.toFixed(1);
   document.getElementById('coffeeVal').textContent = log.coffee;
-  document.getElementById('waterVal').textContent = log.water.toFixed(2).replace(/\.?0+$/, '') || '0';
-
-  const waterPct = Math.min(100, (log.water / 2.0) * 100);
-  document.getElementById('waterBar').style.width = waterPct + '%';
-
-  document.getElementById('stressVal').textContent = log.stress;
-  const stressEl = document.getElementById('stressVal');
-  stressEl.className = 'text-2xl font-bold w-14 text-center ' +
+  document.getElementById('waterVal').textContent = +log.water.toFixed(2) || '0';
+  document.getElementById('waterBar').style.width = Math.min(100, (log.water / 2.0) * 100) + '%';
+  const sv = document.getElementById('stressVal');
+  sv.textContent = log.stress;
+  sv.className = 'text-2xl font-bold w-14 text-center ' +
     (log.stress <= 3 ? 'text-emerald-400' : log.stress <= 6 ? 'text-amber-400' : 'text-red-400');
   document.getElementById('stressRange').value = log.stress;
   if (log.weather) document.getElementById('weatherSel').value = log.weather;
+  const notesEl = document.getElementById('dayNotes');
+  if (log.notes && notesEl.value !== log.notes) notesEl.value = log.notes;
+  const act = log.activity || '';
+  ['none','walk','light','gym'].forEach(k =>
+    document.getElementById('act-' + k).classList.toggle('active', k === act)
+  );
 }
 
-// ──────────────── ATTACK FORM ────────────────
+// ── ATTACK FORM ──
 function openForm(type) {
   currentAttackType = type;
-  const isMigraine = type === 'migraine';
-  document.getElementById('modalTitle').innerHTML = isMigraine
+  const isMig = type === 'migraine';
+  document.getElementById('modalTitle').innerHTML = isMig
     ? '🧊 Приступ <span class="text-migraine-light">мигрени</span>'
     : '🔴 Приступ <span class="text-prostate-light">простаты</span>';
-  const saveBtn = document.getElementById('formSaveBtn');
-  saveBtn.className = (isMigraine ? 'btn-migraine' : 'btn-prostate') +
-    ' flex-2 flex-1 rounded-2xl py-3.5 text-sm font-bold text-white transition-all active:scale-95';
-
+  const btn = document.getElementById('formSaveBtn');
+  btn.className = (isMig ? 'btn-migraine' : 'btn-prostate') +
+    ' flex-1 rounded-2xl py-3.5 text-sm font-bold text-white active:scale-95';
   document.getElementById('formIntensity').value = 5;
   document.getElementById('formIntensityVal').textContent = '5';
   document.getElementById('formLoc').value = '';
   document.getElementById('formMeds').value = '';
   document.getElementById('formComment').value = '';
-
-  const overlay = document.getElementById('modalOverlay');
-  overlay.classList.remove('hidden');
-  requestAnimationFrame(() => { overlay.style.opacity = '1'; });
+  document.getElementById('modalOverlay').classList.remove('hidden');
 }
-
 function closeForm() {
-  const overlay = document.getElementById('modalOverlay');
-  overlay.classList.add('hidden');
+  document.getElementById('modalOverlay').classList.add('hidden');
   currentAttackType = null;
 }
-
 function closeFormOutside(e) {
   if (e.target === document.getElementById('modalOverlay')) closeForm();
 }
-
 function saveAttack() {
   if (!currentAttackType) return;
-  const record = {
+  appData.records.unshift({
     id: Date.now(),
     type: currentAttackType,
     date: getTodayKey(),
@@ -442,25 +491,64 @@ function saveAttack() {
     medications: document.getElementById('formMeds').value.trim(),
     comment: document.getElementById('formComment').value.trim(),
     createdAt: new Date().toISOString(),
-  };
-  appData.records.unshift(record);
+  });
   saveData(appData);
   closeForm();
   showToast('Приступ зафиксирован');
   renderAll();
 }
 
-// ──────────────── CALENDAR ────────────────
+// ── HISTORY FILTER ──
+function setHistFilter(f) {
+  currentHistFilter = f;
+  ['all','migraine','prostate'].forEach(k =>
+    document.getElementById('filt-' + k).classList.toggle('active', k === f)
+  );
+  renderHistory();
+}
+
+// ── STATS ──
+function renderStats() {
+  const now = new Date();
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
+  const mRecs = appData.records.filter(r => r.date >= monthStart);
+  const mLogs = Object.entries(appData.dailyLogs).filter(([k]) => k >= monthStart).map(([,v]) => v);
+  const migrCnt = mRecs.filter(r => r.type === 'migraine').length;
+  const prostCnt = mRecs.filter(r => r.type === 'prostate').length;
+  const avgSleep = mLogs.length ? (mLogs.reduce((s,l) => s + (l.sleep||0), 0) / mLogs.length).toFixed(1) : '—';
+  const avgStress = mLogs.length ? (mLogs.reduce((s,l) => s + (l.stress||0), 0) / mLogs.length).toFixed(1) : '—';
+  const stressColor = avgStress === '—' ? 'text-slate-400' : +avgStress > 6 ? 'text-red-400' : +avgStress > 3 ? 'text-amber-400' : 'text-emerald-400';
+  const month = now.toLocaleDateString('ru-RU', { month: 'long' });
+  document.getElementById('statsBlock').innerHTML = `
+    <div class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-3">Статистика — ${month}</div>
+    <div class="grid grid-cols-2 gap-3">
+      <div class="glass-light rounded-2xl p-3 text-center">
+        <div class="text-2xl font-bold text-migraine-light">${migrCnt}</div>
+        <div class="text-xs text-slate-400 mt-1">🧊 Мигрень</div>
+      </div>
+      <div class="glass-light rounded-2xl p-3 text-center">
+        <div class="text-2xl font-bold text-prostate-light">${prostCnt}</div>
+        <div class="text-xs text-slate-400 mt-1">🔴 Простата</div>
+      </div>
+      <div class="glass-light rounded-2xl p-3 text-center">
+        <div class="text-2xl font-bold text-accent-light">${avgSleep}</div>
+        <div class="text-xs text-slate-400 mt-1">😴 Сон ср.</div>
+      </div>
+      <div class="glass-light rounded-2xl p-3 text-center">
+        <div class="text-2xl font-bold ${stressColor}">${avgStress}</div>
+        <div class="text-xs text-slate-400 mt-1">🧠 Стресс ср.</div>
+      </div>
+    </div>`;
+}
+
+// ── CALENDAR ──
 function buildCalendar() {
   const container = document.getElementById('calGrid');
   const today = new Date();
-  const weeks = 17;
-  const totalDays = weeks * 7;
-
+  const weeks = 17, totalDays = weeks * 7;
   const startDate = new Date(today);
   startDate.setDate(startDate.getDate() - totalDays + 1);
 
-  // collect day dots
   const dayMap = {};
   Object.keys(appData.dailyLogs).forEach(d => { dayMap[d] = { hasData: true }; });
   appData.records.forEach(r => {
@@ -469,27 +557,18 @@ function buildCalendar() {
     dayMap[r.date].hasData = true;
   });
 
-  const months = [];
-  let curMonth = '';
   const dayGrids = [];
   for (let i = 0; i < totalDays; i++) {
     const d = new Date(startDate);
     d.setDate(d.getDate() + i);
-    const key = d.toISOString().slice(0, 10);
-    const m = d.toLocaleDateString('ru-RU', { month: 'short' });
-    if (m !== curMonth) { curMonth = m; months.push({ label: m, idx: Math.floor(i / 7) }); }
-    dayGrids.push({ key, d });
+    dayGrids.push({ key: d.toISOString().slice(0, 10), d });
   }
 
-  // build weeks columns
   const cols = [];
-  for (let w = 0; w < weeks; w++) {
-    const days = dayGrids.slice(w * 7, w * 7 + 7);
-    cols.push(days);
-  }
+  for (let w = 0; w < weeks; w++) cols.push(dayGrids.slice(w * 7, w * 7 + 7));
 
   let html = '<div class="flex gap-1">';
-  cols.forEach((days) => {
+  cols.forEach(days => {
     html += '<div class="flex flex-col gap-1">';
     days.forEach(({ key, d }) => {
       const info = dayMap[key] || {};
@@ -499,72 +578,93 @@ function buildCalendar() {
       else if (info.migraine) color = 'bg-migraine/70';
       else if (info.prostate) color = 'bg-prostate/70';
       else if (info.hasData) color = 'bg-accent/50';
-
-      const todayRing = isToday ? 'ring-2 ring-white/50' : '';
-      const title = `${d.toLocaleDateString('ru-RU')}`;
-      html += `<div class="cal-cell ${color} ${todayRing}" title="${title}" data-date="${key}" onclick="showDayDetail('${key}')"></div>`;
+      html += `<div class="cal-cell ${color}${isToday ? ' ring-2 ring-white/50' : ''}" title="${d.toLocaleDateString('ru-RU')}" onclick="showDayDetail('${key}')"></div>`;
     });
     html += '</div>';
   });
   html += '</div>';
 
   // month labels
-  html += '<div class="flex gap-1 mt-1">';
-  let prevIdx = -5;
-  months.forEach(({ label, idx }) => {
-    if (idx - prevIdx > 2) {
-      html += `<div style="width:${idx * 13}px" class="text-xs text-slate-500 overflow-hidden whitespace-nowrap absolute" ></div>`;
-      prevIdx = idx;
-    }
-  });
-  html += '</div>';
-
-  // simpler month row
-  const monthRow = document.createElement('div');
-  monthRow.className = 'flex text-xs text-slate-500 mt-1';
-  let lastM = '';
-  const frag = [];
-  cols.forEach((days, wi) => {
+  let lastM = '', monthHtml = '<div class="flex gap-1 mt-2">';
+  cols.forEach(days => {
     const m = days[0].d.toLocaleDateString('ru-RU', { month: 'short' });
-    if (m !== lastM) { frag.push({ wi, m }); lastM = m; }
+    monthHtml += `<div class="text-xs text-slate-600 overflow-hidden" style="min-width:13px;max-width:13px">${m !== lastM ? (lastM = m, m) : ''}</div>`;
   });
+  monthHtml += '</div>';
 
-  container.innerHTML = html;
+  container.innerHTML = html + monthHtml;
 
-  // summary
-  const attackCount = appData.records.length;
-  const migraineCount = appData.records.filter(r => r.type === 'migraine').length;
-  const prostateCount = appData.records.filter(r => r.type === 'prostate').length;
-  document.getElementById('calSummary').textContent =
-    `Всего: ${attackCount} приступов (мигрень: ${migraineCount}, простата: ${prostateCount})`;
+  const total = appData.records.length;
+  const migr = appData.records.filter(r => r.type === 'migraine').length;
+  const prost = appData.records.filter(r => r.type === 'prostate').length;
+  document.getElementById('calSummary').textContent = `Всего: ${total} приступов (мигрень: ${migr}, простата: ${prost})`;
 }
+
+// ── DAY DETAIL (used by calendar click AND history card click) ──
+const weatherLabels = { sunny: '☀️ Ясно', cloudy: '⛅ Облачно', rain: '🌧 Осадки', pressure: '🌪 Перепад давления' };
+const actLabels = { none: '😑 Нет', walk: '🚶 Прогулка', light: '🧘 Лёгкая', gym: '💪 Тренировка' };
 
 function showDayDetail(dateKey) {
   const events = appData.records.filter(r => r.date === dateKey);
   const log = appData.dailyLogs[dateKey];
   if (!events.length && !log) return;
+
   const d = new Date(dateKey + 'T12:00:00');
-  const label = d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
-  let msg = label + '\n\n';
-  if (log) msg += `💤 ${log.sleep}ч сна  ☕ ${log.coffee} кофе  💧 ${log.water}л воды  🧠 стресс: ${log.stress}\n`;
-  if (events.length) {
-    events.forEach(e => {
-      msg += `\n${e.type === 'migraine' ? '🧊 Мигрень' : '🔴 Простата'} (${e.time}) — интенсивность ${e.intensity}`;
-      if (e.localization) msg += `, ${e.localization}`;
-      if (e.medications) msg += `\n  💊 ${e.medications}`;
-      if (e.comment) msg += `\n  💬 ${e.comment}`;
-    });
+  document.getElementById('detailTitle').textContent =
+    d.toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+  let html = '';
+
+  if (log) {
+    const sc = log.stress <= 3 ? '#4ade80' : log.stress <= 6 ? '#fbbf24' : '#f87171';
+    html += `<div class="tracker-card rounded-2xl p-4 mb-3">
+      <div class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-3">Данные дня</div>
+      <div class="grid grid-cols-2 gap-2">
+        <div class="glass-light rounded-xl p-3"><div class="text-xs text-slate-400 mb-1">😴 Сон</div><div class="text-lg font-bold text-slate-200">${log.sleep} ч</div></div>
+        <div class="glass-light rounded-xl p-3"><div class="text-xs text-slate-400 mb-1">☕ Кофе</div><div class="text-lg font-bold text-amber-400">${log.coffee} чш</div></div>
+        <div class="glass-light rounded-xl p-3"><div class="text-xs text-slate-400 mb-1">💧 Вода</div><div class="text-lg font-bold text-sky-400">${log.water} л</div></div>
+        <div class="glass-light rounded-xl p-3"><div class="text-xs text-slate-400 mb-1">🧠 Стресс</div><div class="text-lg font-bold" style="color:${sc}">${log.stress}/10</div></div>
+      </div>
+      ${log.activity ? `<div class="mt-2 glass-light rounded-xl p-2.5 text-sm text-slate-300">🏃 ${actLabels[log.activity] || log.activity}</div>` : ''}
+      ${log.weather ? `<div class="mt-2 glass-light rounded-xl p-2.5 text-sm text-slate-300">${weatherLabels[log.weather] || log.weather}</div>` : ''}
+      ${log.notes ? `<div class="mt-2 glass-light rounded-xl p-2.5 text-sm text-slate-300">📝 ${log.notes}</div>` : ''}
+    </div>`;
   }
-  alert(msg);
+
+  events.forEach(e => {
+    const isMig = e.type === 'migraine';
+    const ic = e.intensity <= 3 ? '#4ade80' : e.intensity <= 6 ? '#fbbf24' : '#f87171';
+    html += `<div class="tracker-card rounded-2xl p-4 mb-2">
+      <div class="flex items-center gap-2 mb-2">
+        <span>${isMig ? '🧊' : '🔴'}</span>
+        <span class="text-sm font-semibold ${isMig ? 'text-migraine-light' : 'text-prostate-light'}">${isMig ? 'Мигрень' : 'Простата'}</span>
+        <span class="text-xs text-slate-400 ml-auto">${e.time}</span>
+      </div>
+      <div class="flex items-center gap-2 mb-2">
+        <span class="text-xs text-slate-400">Интенсивность:</span>
+        <span class="text-lg font-bold" style="color:${ic}">${e.intensity}/10</span>
+      </div>
+      ${e.localization ? `<div class="text-xs text-slate-300 mb-1">📍 ${e.localization}</div>` : ''}
+      ${e.medications ? `<div class="text-xs text-slate-300 mb-1">💊 ${e.medications}</div>` : ''}
+      ${e.comment ? `<div class="text-xs text-slate-400">💬 ${e.comment}</div>` : ''}
+    </div>`;
+  });
+
+  document.getElementById('detailContent').innerHTML = html;
+  document.getElementById('detailOverlay').classList.remove('hidden');
 }
 
-// ──────────────── HISTORY ────────────────
+function closeDetail() { document.getElementById('detailOverlay').classList.add('hidden'); }
+function closeDetailOutside(e) { if (e.target === document.getElementById('detailOverlay')) closeDetail(); }
+
+// ── HISTORY ──
 function renderHistory() {
   const list = document.getElementById('historyList');
   const empty = document.getElementById('histEmpty');
   const count = document.getElementById('histCount');
 
-  const recs = appData.records;
+  let recs = appData.records;
+  if (currentHistFilter !== 'all') recs = recs.filter(r => r.type === currentHistFilter);
   count.textContent = recs.length;
 
   if (!recs.length) {
@@ -579,28 +679,32 @@ function renderHistory() {
     const badge = isMig
       ? '<span class="tag-badge migraine-badge">🧊 Мигрень</span>'
       : '<span class="tag-badge prostate-badge">🔴 Простата</span>';
-    const d = new Date(r.date + 'T12:00:00');
-    const dateStr = d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
-    const intensityColor = r.intensity <= 3 ? 'text-emerald-400' : r.intensity <= 6 ? 'text-amber-400' : 'text-red-400';
-    return `
-      <div class="tracker-card rounded-2xl p-3.5 animate-fadeIn">
-        <div class="flex items-start justify-between gap-2">
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center gap-2 mb-1.5 flex-wrap">
-              ${badge}
-              <span class="text-xs text-slate-400">${dateStr} ${r.time}</span>
-            </div>
-            <div class="flex items-center gap-3 mb-1">
-              <span class="text-xs text-slate-400">Интенсивность:</span>
-              <span class="text-sm font-bold ${intensityColor}">${r.intensity}/10</span>
-            </div>
-            ${r.localization ? `<div class="text-xs text-slate-400 truncate">📍 ${r.localization}</div>` : ''}
-            ${r.medications ? `<div class="text-xs text-slate-400 truncate">💊 ${r.medications}</div>` : ''}
-            ${r.comment ? `<div class="text-xs text-slate-500 truncate">💬 ${r.comment}</div>` : ''}
+    const dateStr = new Date(r.date + 'T12:00:00').toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
+    const ic = r.intensity <= 3 ? 'text-emerald-400' : r.intensity <= 6 ? 'text-amber-400' : 'text-red-400';
+    const log = appData.dailyLogs[r.date];
+    const snippet = log
+      ? `<div class="flex gap-3 mt-2 pt-2 border-t border-slate-700/50 text-xs text-slate-500">
+          <span>😴 ${log.sleep}ч</span><span>☕ ${log.coffee}</span><span>💧 ${log.water}л</span><span>🧠 ${log.stress}/10</span>
+         </div>`
+      : '';
+    return `<div class="tracker-card hist-card rounded-2xl p-3.5 animate-fadeIn" onclick="showDayDetail('${r.date}')">
+      <div class="flex items-start justify-between gap-2">
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+            ${badge}
+            <span class="text-xs text-slate-400">${dateStr} · ${r.time}</span>
           </div>
-          <button onclick="deleteRecord(${r.id})" class="text-slate-600 hover:text-red-400 transition-colors text-xl flex-shrink-0 leading-none">×</button>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-slate-400">Интенсивность:</span>
+            <span class="text-sm font-bold ${ic}">${r.intensity}/10</span>
+          </div>
+          ${r.localization ? `<div class="text-xs text-slate-400 mt-1 truncate">📍 ${r.localization}</div>` : ''}
+          ${r.medications ? `<div class="text-xs text-slate-400 truncate">💊 ${r.medications}</div>` : ''}
+          ${snippet}
         </div>
-      </div>`;
+        <button onclick="event.stopPropagation();deleteRecord(${r.id})" class="text-slate-600 hover:text-red-400 transition-colors text-xl flex-shrink-0 leading-none mt-0.5">×</button>
+      </div>
+    </div>`;
   }).join('');
 }
 
@@ -612,14 +716,14 @@ function deleteRecord(id) {
   showToast('Запись удалена');
 }
 
-// ──────────────── TODAY EVENTS ────────────────
+// ── TODAY EVENTS ──
 function renderTodayEvents() {
-  const todayEvents = appData.records.filter(r => r.date === getTodayKey());
+  const todayEvts = appData.records.filter(r => r.date === getTodayKey());
   const el = document.getElementById('todayEvents');
   const pulse = document.getElementById('livePulseDot');
-  if (!todayEvents.length) { el.innerHTML = ''; pulse.classList.add('hidden'); return; }
+  if (!todayEvts.length) { el.innerHTML = ''; pulse.classList.add('hidden'); return; }
   pulse.classList.remove('hidden');
-  el.innerHTML = todayEvents.map(e => {
+  el.innerHTML = todayEvts.map(e => {
     const isMig = e.type === 'migraine';
     return `<div class="flex items-center gap-2 text-xs px-1 py-0.5">
       <span>${isMig ? '🧊' : '🔴'}</span>
@@ -630,78 +734,69 @@ function renderTodayEvents() {
   }).join('');
 }
 
-// ──────────────── HEADER ────────────────
+// ── HEADER ──
 function renderHeader() {
-  const now = new Date();
-  const dateStr = now.toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' });
-  document.getElementById('headerDate').textContent = dateStr;
-  document.getElementById('todayPill').textContent = dateStr;
+  const s = new Date().toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' });
+  document.getElementById('headerDate').textContent = s;
+  document.getElementById('todayPill').textContent = s;
 }
 
-// ──────────────── EXPORT / IMPORT ────────────────
+// ── EXPORT / IMPORT ──
 function exportJSON() {
   const blob = new Blob([JSON.stringify(appData, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `health_diary_${getTodayKey()}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
+  const a = Object.assign(document.createElement('a'), { href: url, download: `health_diary_${getTodayKey()}.json` });
+  a.click(); URL.revokeObjectURL(url);
   showToast('Данные экспортированы');
 }
-
 function importJSON(event) {
-  const file = event.target.files[0];
-  if (!file) return;
+  const file = event.target.files[0]; if (!file) return;
   const reader = new FileReader();
   reader.onload = e => {
     try {
-      const imported = JSON.parse(e.target.result);
-      if (!imported.records || !imported.dailyLogs) throw new Error('Неверный формат');
-      if (confirm(`Импортировать данные? (${imported.records.length} записей)\nТекущие данные будут объединены.`)) {
-        // merge
-        const existingIds = new Set(appData.records.map(r => r.id));
-        imported.records.forEach(r => { if (!existingIds.has(r.id)) appData.records.push(r); });
-        Object.assign(appData.dailyLogs, imported.dailyLogs);
+      const imp = JSON.parse(e.target.result);
+      if (!imp.records || !imp.dailyLogs) throw new Error('Неверный формат');
+      if (confirm(`Импортировать? (${imp.records.length} записей). Данные будут объединены.`)) {
+        const ids = new Set(appData.records.map(r => r.id));
+        imp.records.forEach(r => { if (!ids.has(r.id)) appData.records.push(r); });
+        Object.assign(appData.dailyLogs, imp.dailyLogs);
         appData.records.sort((a, b) => b.id - a.id);
-        saveData(appData);
-        renderAll();
-        showToast('Данные импортированы');
+        saveData(appData); renderAll(); showToast('Данные импортированы');
       }
-    } catch (err) {
-      alert('Ошибка: ' + err.message);
-    }
+    } catch (err) { alert('Ошибка: ' + err.message); }
   };
-  reader.readAsText(file);
-  event.target.value = '';
+  reader.readAsText(file); event.target.value = '';
 }
 
-// ──────────────── TOAST ────────────────
+// ── TOAST ──
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = '✓ ' + msg;
-  t.style.opacity = '1';
-  t.style.transform = 'translateX(-50%) translateY(0)';
-  setTimeout(() => {
-    t.style.opacity = '0';
-    t.style.transform = 'translateX(-50%) translateY(-8px)';
-  }, 2200);
+  t.style.opacity = '1'; t.style.transform = 'translateX(-50%) translateY(0)';
+  setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(-50%) translateY(-8px)'; }, 2200);
 }
 
-// ──────────────── RENDER ALL ────────────────
+// ── SAVE DAY ──
+function saveDayManual() {
+  getOrCreateDailyLog(appData);
+  saveData(appData);
+  showToast('Данные дня сохранены');
+  if (!document.getElementById('tabCalendar').classList.contains('hidden')) buildCalendar();
+}
+
+// ── RENDER ALL ──
 function renderAll() {
   renderHeader();
   renderTrackers();
   renderTodayEvents();
-  buildCalendar();
-  renderHistory();
+  if (!document.getElementById('tabCalendar').classList.contains('hidden')) buildCalendar();
+  if (!document.getElementById('tabHistory').classList.contains('hidden')) { renderStats(); renderHistory(); }
 }
 
-// ──────────────── INIT ────────────────
+// ── INIT ──
 document.addEventListener('DOMContentLoaded', () => {
   renderAll();
-  // auto-save trackers on change
-  setInterval(() => { saveData(appData); }, 30000);
+  setInterval(() => saveData(appData), 30000);
 });
 </script>
 </body>
