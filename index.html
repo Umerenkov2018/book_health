@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Дневник здоровья</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          dark: { 900: '#0a0a0f', 800: '#12121a', 700: '#1a1a26', 600: '#22223a', 500: '#2e2e4a' },
+          accent: { DEFAULT: '#7c6af0', light: '#a89af7', dark: '#5a4fd8' },
+          migraine: { DEFAULT: '#f0546a', light: '#f87d8e', dark: '#c73a50' },
+          prostate: { DEFAULT: '#f09654', light: '#f7b47d', dark: '#c77830' },
+        },
+        fontFamily: { sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'Segoe UI', 'sans-serif'] },
+        borderRadius: { '2xl': '1rem', '3xl': '1.5rem', '4xl': '2rem' },
+      }
+    }
+  }
+</script>
+<style>
+  * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+  body { background: #0a0a0f; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif; overscroll-behavior: none; }
+  ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: #2e2e4a; border-radius: 2px; }
+  .glass { background: rgba(18,18,26,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(124,106,240,0.12); }
+  .glass-light { background: rgba(30,30,50,0.6); backdrop-filter: blur(12px); border: 1px solid rgba(124,106,240,0.1); }
+  .btn-primary { background: linear-gradient(135deg, #7c6af0, #5a4fd8); transition: all 0.2s; }
+  .btn-primary:hover { background: linear-gradient(135deg, #a89af7, #7c6af0); transform: translateY(-1px); }
+  .btn-primary:active { transform: scale(0.97); }
+  .btn-migraine { background: linear-gradient(135deg, #f0546a, #c73a50); }
+  .btn-migraine:hover { background: linear-gradient(135deg, #f87d8e, #f0546a); transform: translateY(-1px); }
+  .btn-prostate { background: linear-gradient(135deg, #f09654, #c77830); }
+  .btn-prostate:hover { background: linear-gradient(135deg, #f7b47d, #f09654); transform: translateY(-1px); }
+  .counter-btn { background: rgba(124,106,240,0.15); border: 1px solid rgba(124,106,240,0.25); transition: all 0.15s; }
+  .counter-btn:hover { background: rgba(124,106,240,0.3); } .counter-btn:active { transform: scale(0.93); }
+  .tracker-card { background: rgba(22,22,38,0.9); border: 1px solid rgba(124,106,240,0.1); transition: all 0.2s; }
+  .tracker-card:hover { border-color: rgba(124,106,240,0.3); }
+  .cal-cell { width: 12px; height: 12px; border-radius: 2px; transition: all 0.15s; }
+  .cal-cell:hover { transform: scale(1.3); }
+  .modal-overlay { background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); }
+  input[type=range] { -webkit-appearance: none; background: rgba(124,106,240,0.2); height: 6px; border-radius: 3px; outline: none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #7c6af0; cursor: pointer; box-shadow: 0 2px 8px rgba(124,106,240,0.5); }
+  .tag-badge { background: rgba(124,106,240,0.2); border: 1px solid rgba(124,106,240,0.3); border-radius: 8px; padding: 2px 8px; font-size: 11px; }
+  .migraine-badge { background: rgba(240,84,106,0.2); border: 1px solid rgba(240,84,106,0.3); color: #f87d8e; }
+  .prostate-badge { background: rgba(240,150,84,0.2); border: 1px solid rgba(240,150,84,0.3); color: #f7b47d; }
+  .section-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(124,106,240,0.3), transparent); }
+  @supports (padding-top: env(safe-area-inset-top)) {
+    .safe-top { padding-top: calc(env(safe-area-inset-top) + 12px); }
+    .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+  }
+  .animate-fadeIn { animation: fadeIn 0.25s ease-out; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+  .animate-slideUp { animation: slideUp 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+  @keyframes slideUp { from { opacity:0; transform:translateY(40px) scale(0.96); } to { opacity:1; transform:translateY(0) scale(1); } }
+  select option { background: #1a1a26; color: #e2e8f0; }
+  .nav-item { transition: all 0.2s; opacity: 0.5; }
+  .nav-item.active { opacity: 1; color: #a89af7; }
+  .pulse-dot { width:8px; height:8px; background:#f0546a; border-radius:50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.2)} }
+</style>
+</head>
+<body class="min-h-screen text-slate-100">
+
+<!-- HEADER -->
+<header class="glass sticky top-0 z-40 safe-top">
+  <div class="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-accent to-accent-dark flex items-center justify-center text-sm">🩺</div>
+      <div>
+        <div class="text-sm font-semibold tracking-tight">Дневник здоровья</div>
+        <div id="headerDate" class="text-xs text-slate-400"></div>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <div id="livePulseDot" class="pulse-dot hidden"></div>
+      <button onclick="exportJSON()" class="text-xs glass-light px-3 py-1.5 rounded-xl text-slate-300 hover:text-white transition-colors">↑ JSON</button>
+      <label class="text-xs glass-light px-3 py-1.5 rounded-xl text-slate-300 hover:text-white transition-colors cursor-pointer">
+        ↓ JSON<input type="file" accept=".json" class="hidden" onchange="importJSON(event)">
+      </label>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="max-w-lg mx-auto px-4 pb-24 pt-4 space-y-4">
+
+  <!-- TODAY DATE PILL -->
+  <div class="flex items-center gap-3">
+    <div id="todayPill" class="glass-light px-4 py-2 rounded-2xl text-sm font-medium text-accent-light"></div>
+    <div class="flex-1 section-divider"></div>
+  </div>
+
+  <!-- DAILY FACTORS CARD -->
+  <div class="glass rounded-3xl p-5 animate-fadeIn">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="font-semibold text-sm uppercase tracking-widest text-slate-400">Ежедневные факторы</h2>
+      <div class="text-lg">📊</div>
+    </div>
+
+    <!-- SLEEP -->
+    <div class="tracker-card rounded-2xl p-4 mb-3">
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">😴</span>
+          <div>
+            <div class="text-sm font-medium">Сон</div>
+            <div class="text-xs text-slate-400">часы</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="adjustTracker('sleep',-0.5)" class="counter-btn w-8 h-8 rounded-xl text-lg font-bold text-slate-300 flex items-center justify-center">−</button>
+          <div id="sleepVal" class="text-2xl font-bold text-accent-light w-14 text-center">7.0</div>
+          <button onclick="adjustTracker('sleep',0.5)" class="counter-btn w-8 h-8 rounded-xl text-lg font-bold text-slate-300 flex items-center justify-center">+</button>
+        </div>
+      </div>
+      <div class="flex gap-1.5 flex-wrap">
+        <button onclick="setTracker('sleep',5)" class="tag-badge cursor-pointer hover:bg-accent/30 transition-colors">5ч</button>
+        <button onclick="setTracker('sleep',6)" class="tag-badge cursor-pointer hover:bg-accent/30 transition-colors">6ч</button>
+        <button onclick="setTracker('sleep',7)" class="tag-badge cursor-pointer hover:bg-accent/30 transition-colors">7ч</button>
+        <button onclick="setTracker('sleep',8)" class="tag-badge cursor-pointer hover:bg-accent/30 transition-colors">8ч</button>
+        <button onclick="setTracker('sleep',9)" class="tag-badge cursor-pointer hover:bg-accent/30 transition-colors">9ч</button>
+      </div>
+    </div>
+
+    <!-- COFFEE -->
+    <div class="tracker-card rounded-2xl p-4 mb-3">
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">☕</span>
+          <div>
+            <div class="text-sm font-medium">Кофе</div>
+            <div class="text-xs text-slate-400">чашки</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="adjustTracker('coffee',-1)" class="counter-btn w-8 h-8 rounded-xl text-lg font-bold text-slate-300 flex items-center justify-center">−</button>
+          <div id="coffeeVal" class="text-2xl font-bold text-amber-400 w-14 text-center">1</div>
+          <button onclick="adjustTracker('coffee',1)" class="counter-btn w-8 h-8 rounded-xl text-lg font-bold text-slate-300 flex items-center justify-center">+</button>
+        </div>
+      </div>
+      <div class="flex gap-1.5">
+        <button onclick="setTracker('coffee',0)" class="tag-badge cursor-pointer hover:bg-accent/30 transition-colors">0</button>
+        <button onclick="setTracker('coffee',1)" class="tag-badge cursor-pointer hover:bg-accent/30 transition-colors">1</button>
+        <button onclick="setTracker('coffee',2)" class="tag-badge cursor-pointer hover:bg-accent/30 transition-colors">2</button>
+        <button onclick="setTracker('coffee',3)" class="tag-badge cursor-pointer hover:bg-accent/30 transition-colors">3+</button>
+      </div>
+    </div>
+
+    <!-- WATER -->
+    <div class="tracker-card rounded-2xl p-4 mb-3">
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">💧</span>
+          <div>
+            <div class="text-sm font-medium">Вода</div>
+            <div class="text-xs text-slate-400">литры</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="adjustTracker('water',-0.25)" class="counter-btn w-8 h-8 rounded-xl text-lg font-bold text-slate-300 flex items-center justify-center">−</button>
+          <div id="waterVal" class="text-2xl font-bold text-sky-400 w-14 text-center">1.5</div>
+          <button onclick="adjustTracker('water',0.25)" class="counter-btn w-8 h-8 rounded-xl text-lg font-bold text-slate-300 flex items-center justify-center">+</button>
+        </div>
+      </div>
+      <!-- water progress -->
+      <div class="mt-1 bg-slate-700/40 rounded-full h-2">
+        <div id="waterBar" class="h-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 transition-all duration-300" style="width:37.5%"></div>
+      </div>
+      <div class="text-xs text-slate-500 mt-1">Рекомендуется 2.0 л</div>
+    </div>
+
+    <!-- STRESS -->
+    <div class="tracker-card rounded-2xl p-4 mb-3">
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">🧠</span>
+          <div>
+            <div class="text-sm font-medium">Стресс</div>
+            <div class="text-xs text-slate-400">уровень 1–10</div>
+          </div>
+        </div>
+        <div id="stressVal" class="text-2xl font-bold text-purple-400 w-14 text-center">3</div>
+      </div>
+      <input type="range" min="1" max="10" value="3" id="stressRange" oninput="setStress(this.value)" class="w-full">
+      <div class="flex justify-between text-xs text-slate-500 mt-1 px-0.5">
+        <span>Спокойно</span><span>Умеренно</span><span>Критично</span>
+      </div>
+    </div>
+
+    <!-- WEATHER -->
+    <div class="tracker-card rounded-2xl p-4">
+      <div class="flex items-center gap-3">
+        <span class="text-xl">🌤</span>
+        <div class="flex-1">
+          <div class="text-sm font-medium mb-1">Погода</div>
+          <select id="weatherSel" onchange="setWeather(this.value)" class="w-full bg-dark-600 text-slate-200 text-sm rounded-xl px-3 py-2 border border-slate-600/50 outline-none focus:border-accent/50 transition-colors">
+            <option value="">— выбрать —</option>
+            <option value="sunny">☀️ Ясно</option>
+            <option value="cloudy">⛅ Облачно</option>
+            <option value="rain">🌧 Осадки</option>
+            <option value="pressure">🌪 Перепад давления</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EVENTS CARD -->
+  <div class="glass rounded-3xl p-5 animate-fadeIn">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="font-semibold text-sm uppercase tracking-widest text-slate-400">Фиксация приступов</h2>
+      <div class="text-lg">⚡</div>
+    </div>
+    <div class="flex gap-3">
+      <button onclick="openForm('migraine')" class="btn-migraine flex-1 rounded-2xl py-3.5 px-4 text-sm font-semibold text-white shadow-lg transition-all active:scale-95">
+        🧊 Мигрень
+      </button>
+      <button onclick="openForm('prostate')" class="btn-prostate flex-1 rounded-2xl py-3.5 px-4 text-sm font-semibold text-white shadow-lg transition-all active:scale-95">
+        🔴 Простата
+      </button>
+    </div>
+    <div id="todayEvents" class="mt-3 space-y-2"></div>
+  </div>
+
+  <!-- CALENDAR SECTION -->
+  <div class="glass rounded-3xl p-5 animate-fadeIn">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="font-semibold text-sm uppercase tracking-widest text-slate-400">Активность</h2>
+      <div id="calLegend" class="flex items-center gap-2 text-xs text-slate-500">
+        <span class="inline-block w-3 h-3 rounded-sm bg-slate-700"></span>нет
+        <span class="inline-block w-3 h-3 rounded-sm bg-accent/60"></span>данные
+        <span class="inline-block w-3 h-3 rounded-sm bg-migraine/70"></span>мигрень
+        <span class="inline-block w-3 h-3 rounded-sm bg-prostate/70"></span>простата
+      </div>
+    </div>
+    <div id="calGrid" class="overflow-x-auto pb-1">
+      <!-- generated by JS -->
+    </div>
+    <div class="flex gap-2 mt-3 text-xs text-slate-500 justify-end">
+      <span id="calSummary"></span>
+    </div>
+  </div>
+
+  <!-- HISTORY SECTION -->
+  <div class="glass rounded-3xl p-5 animate-fadeIn">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="font-semibold text-sm uppercase tracking-widest text-slate-400">История записей</h2>
+      <span id="histCount" class="tag-badge text-accent-light">0</span>
+    </div>
+    <div id="historyList" class="space-y-2 max-h-96 overflow-y-auto pr-1"></div>
+    <div id="histEmpty" class="text-center text-slate-500 text-sm py-8">Записей пока нет</div>
+  </div>
+
+</main>
+
+<!-- BOTTOM NAV -->
+<nav class="fixed bottom-0 left-0 right-0 glass safe-bottom z-40">
+  <div class="max-w-lg mx-auto flex justify-around py-2 px-4">
+    <button onclick="scrollTo({top:0,behavior:'smooth'})" class="nav-item active flex flex-col items-center gap-0.5 py-1 px-4 text-xs">
+      <span class="text-lg">📊</span><span>Сегодня</span>
+    </button>
+    <button onclick="document.getElementById('calGrid').scrollIntoView({behavior:'smooth'})" class="nav-item flex flex-col items-center gap-0.5 py-1 px-4 text-xs">
+      <span class="text-lg">📅</span><span>Календарь</span>
+    </button>
+    <button onclick="document.getElementById('historyList').scrollIntoView({behavior:'smooth'})" class="nav-item flex flex-col items-center gap-0.5 py-1 px-4 text-xs">
+      <span class="text-lg">📋</span><span>История</span>
+    </button>
+  </div>
+</nav>
+
+<!-- MODAL ATTACK FORM -->
+<div id="modalOverlay" class="modal-overlay fixed inset-0 z-50 flex items-end justify-center hidden" onclick="closeFormOutside(event)">
+  <div id="modalBox" class="glass w-full max-w-lg rounded-t-4xl p-6 pb-10 animate-slideUp">
+    <div class="w-10 h-1 bg-slate-600 rounded-full mx-auto mb-5"></div>
+    <div id="modalTitle" class="text-lg font-bold mb-5"></div>
+
+    <!-- Intensity -->
+    <div class="mb-5">
+      <div class="flex justify-between items-center mb-2">
+        <label class="text-sm text-slate-300">Интенсивность</label>
+        <span id="formIntensityVal" class="text-xl font-bold text-accent-light">5</span>
+      </div>
+      <input type="range" min="1" max="10" value="5" id="formIntensity" oninput="document.getElementById('formIntensityVal').textContent=this.value" class="w-full">
+      <div class="flex justify-between text-xs text-slate-500 mt-1"><span>1 — слабо</span><span>10 — нестерпимо</span></div>
+    </div>
+
+    <!-- Localization -->
+    <div class="mb-4">
+      <label class="text-sm text-slate-300 block mb-2">Локализация</label>
+      <input id="formLoc" type="text" placeholder="напр. левый висок, паховая область..." class="w-full bg-dark-600 border border-slate-600/50 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 outline-none focus:border-accent/50 transition-colors">
+    </div>
+
+    <!-- Medications -->
+    <div class="mb-4">
+      <label class="text-sm text-slate-300 block mb-2">Лекарства / действия</label>
+      <input id="formMeds" type="text" placeholder="напр. Суматриптан 50мг, лёг отдыхать..." class="w-full bg-dark-600 border border-slate-600/50 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 outline-none focus:border-accent/50 transition-colors">
+    </div>
+
+    <!-- Comment -->
+    <div class="mb-6">
+      <label class="text-sm text-slate-300 block mb-2">Комментарий</label>
+      <textarea id="formComment" rows="2" placeholder="дополнительные заметки..." class="w-full bg-dark-600 border border-slate-600/50 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 outline-none focus:border-accent/50 transition-colors resize-none"></textarea>
+    </div>
+
+    <div class="flex gap-3">
+      <button onclick="closeForm()" class="flex-1 glass-light rounded-2xl py-3.5 text-sm font-medium text-slate-300">Отмена</button>
+      <button id="formSaveBtn" onclick="saveAttack()" class="flex-2 flex-1 rounded-2xl py-3.5 text-sm font-bold text-white transition-all active:scale-95">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 glass px-5 py-3 rounded-2xl text-sm font-medium shadow-xl opacity-0 transition-all duration-300 pointer-events-none">
+  ✓ Сохранено
+</div>
+
+<script>
+// ──────────────── DATA LAYER ────────────────
+const STORAGE_KEY = 'health_diary_v2';
+
+function loadData() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || { records: [], dailyLogs: {} }; }
+  catch { return { records: [], dailyLogs: {} }; }
+}
+
+function saveData(data) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function getTodayKey() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function getOrCreateDailyLog(data) {
+  const key = getTodayKey();
+  if (!data.dailyLogs[key]) {
+    data.dailyLogs[key] = { sleep: 7, coffee: 1, water: 1.5, stress: 3, weather: '', updated: new Date().toISOString() };
+  }
+  return data.dailyLogs[key];
+}
+
+// ──────────────── STATE ────────────────
+let appData = loadData();
+let currentAttackType = null;
+
+// ──────────────── TRACKERS ────────────────
+function adjustTracker(key, delta) {
+  const log = getOrCreateDailyLog(appData);
+  let newVal = +(log[key] + delta).toFixed(2);
+  if (key === 'sleep') newVal = Math.max(0, Math.min(24, newVal));
+  if (key === 'coffee') newVal = Math.max(0, Math.min(20, newVal));
+  if (key === 'water') newVal = Math.max(0, Math.min(10, newVal));
+  log[key] = newVal;
+  saveData(appData);
+  renderTrackers();
+}
+
+function setTracker(key, val) {
+  const log = getOrCreateDailyLog(appData);
+  log[key] = val;
+  saveData(appData);
+  renderTrackers();
+}
+
+function setStress(val) {
+  const log = getOrCreateDailyLog(appData);
+  log.stress = +val;
+  saveData(appData);
+  renderTrackers();
+}
+
+function setWeather(val) {
+  const log = getOrCreateDailyLog(appData);
+  log.weather = val;
+  saveData(appData);
+}
+
+function renderTrackers() {
+  const log = getOrCreateDailyLog(appData);
+  document.getElementById('sleepVal').textContent = log.sleep.toFixed(1);
+  document.getElementById('coffeeVal').textContent = log.coffee;
+  document.getElementById('waterVal').textContent = log.water.toFixed(2).replace(/\.?0+$/, '') || '0';
+
+  const waterPct = Math.min(100, (log.water / 2.0) * 100);
+  document.getElementById('waterBar').style.width = waterPct + '%';
+
+  document.getElementById('stressVal').textContent = log.stress;
+  const stressEl = document.getElementById('stressVal');
+  stressEl.className = 'text-2xl font-bold w-14 text-center ' +
+    (log.stress <= 3 ? 'text-emerald-400' : log.stress <= 6 ? 'text-amber-400' : 'text-red-400');
+  document.getElementById('stressRange').value = log.stress;
+  if (log.weather) document.getElementById('weatherSel').value = log.weather;
+}
+
+// ──────────────── ATTACK FORM ────────────────
+function openForm(type) {
+  currentAttackType = type;
+  const isMigraine = type === 'migraine';
+  document.getElementById('modalTitle').innerHTML = isMigraine
+    ? '🧊 Приступ <span class="text-migraine-light">мигрени</span>'
+    : '🔴 Приступ <span class="text-prostate-light">простаты</span>';
+  const saveBtn = document.getElementById('formSaveBtn');
+  saveBtn.className = (isMigraine ? 'btn-migraine' : 'btn-prostate') +
+    ' flex-2 flex-1 rounded-2xl py-3.5 text-sm font-bold text-white transition-all active:scale-95';
+
+  document.getElementById('formIntensity').value = 5;
+  document.getElementById('formIntensityVal').textContent = '5';
+  document.getElementById('formLoc').value = '';
+  document.getElementById('formMeds').value = '';
+  document.getElementById('formComment').value = '';
+
+  const overlay = document.getElementById('modalOverlay');
+  overlay.classList.remove('hidden');
+  requestAnimationFrame(() => { overlay.style.opacity = '1'; });
+}
+
+function closeForm() {
+  const overlay = document.getElementById('modalOverlay');
+  overlay.classList.add('hidden');
+  currentAttackType = null;
+}
+
+function closeFormOutside(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeForm();
+}
+
+function saveAttack() {
+  if (!currentAttackType) return;
+  const record = {
+    id: Date.now(),
+    type: currentAttackType,
+    date: getTodayKey(),
+    time: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }),
+    intensity: +document.getElementById('formIntensity').value,
+    localization: document.getElementById('formLoc').value.trim(),
+    medications: document.getElementById('formMeds').value.trim(),
+    comment: document.getElementById('formComment').value.trim(),
+    createdAt: new Date().toISOString(),
+  };
+  appData.records.unshift(record);
+  saveData(appData);
+  closeForm();
+  showToast('Приступ зафиксирован');
+  renderAll();
+}
+
+// ──────────────── CALENDAR ────────────────
+function buildCalendar() {
+  const container = document.getElementById('calGrid');
+  const today = new Date();
+  const weeks = 17;
+  const totalDays = weeks * 7;
+
+  const startDate = new Date(today);
+  startDate.setDate(startDate.getDate() - totalDays + 1);
+
+  // collect day dots
+  const dayMap = {};
+  Object.keys(appData.dailyLogs).forEach(d => { dayMap[d] = { hasData: true }; });
+  appData.records.forEach(r => {
+    if (!dayMap[r.date]) dayMap[r.date] = {};
+    dayMap[r.date][r.type] = true;
+    dayMap[r.date].hasData = true;
+  });
+
+  const months = [];
+  let curMonth = '';
+  const dayGrids = [];
+  for (let i = 0; i < totalDays; i++) {
+    const d = new Date(startDate);
+    d.setDate(d.getDate() + i);
+    const key = d.toISOString().slice(0, 10);
+    const m = d.toLocaleDateString('ru-RU', { month: 'short' });
+    if (m !== curMonth) { curMonth = m; months.push({ label: m, idx: Math.floor(i / 7) }); }
+    dayGrids.push({ key, d });
+  }
+
+  // build weeks columns
+  const cols = [];
+  for (let w = 0; w < weeks; w++) {
+    const days = dayGrids.slice(w * 7, w * 7 + 7);
+    cols.push(days);
+  }
+
+  let html = '<div class="flex gap-1">';
+  cols.forEach((days) => {
+    html += '<div class="flex flex-col gap-1">';
+    days.forEach(({ key, d }) => {
+      const info = dayMap[key] || {};
+      const isToday = key === getTodayKey();
+      let color = 'bg-slate-700/50';
+      if (info.migraine && info.prostate) color = 'bg-purple-500/80';
+      else if (info.migraine) color = 'bg-migraine/70';
+      else if (info.prostate) color = 'bg-prostate/70';
+      else if (info.hasData) color = 'bg-accent/50';
+
+      const todayRing = isToday ? 'ring-2 ring-white/50' : '';
+      const title = `${d.toLocaleDateString('ru-RU')}`;
+      html += `<div class="cal-cell ${color} ${todayRing}" title="${title}" data-date="${key}" onclick="showDayDetail('${key}')"></div>`;
+    });
+    html += '</div>';
+  });
+  html += '</div>';
+
+  // month labels
+  html += '<div class="flex gap-1 mt-1">';
+  let prevIdx = -5;
+  months.forEach(({ label, idx }) => {
+    if (idx - prevIdx > 2) {
+      html += `<div style="width:${idx * 13}px" class="text-xs text-slate-500 overflow-hidden whitespace-nowrap absolute" ></div>`;
+      prevIdx = idx;
+    }
+  });
+  html += '</div>';
+
+  // simpler month row
+  const monthRow = document.createElement('div');
+  monthRow.className = 'flex text-xs text-slate-500 mt-1';
+  let lastM = '';
+  const frag = [];
+  cols.forEach((days, wi) => {
+    const m = days[0].d.toLocaleDateString('ru-RU', { month: 'short' });
+    if (m !== lastM) { frag.push({ wi, m }); lastM = m; }
+  });
+
+  container.innerHTML = html;
+
+  // summary
+  const attackCount = appData.records.length;
+  const migraineCount = appData.records.filter(r => r.type === 'migraine').length;
+  const prostateCount = appData.records.filter(r => r.type === 'prostate').length;
+  document.getElementById('calSummary').textContent =
+    `Всего: ${attackCount} приступов (мигрень: ${migraineCount}, простата: ${prostateCount})`;
+}
+
+function showDayDetail(dateKey) {
+  const events = appData.records.filter(r => r.date === dateKey);
+  const log = appData.dailyLogs[dateKey];
+  if (!events.length && !log) return;
+  const d = new Date(dateKey + 'T12:00:00');
+  const label = d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+  let msg = label + '\n\n';
+  if (log) msg += `💤 ${log.sleep}ч сна  ☕ ${log.coffee} кофе  💧 ${log.water}л воды  🧠 стресс: ${log.stress}\n`;
+  if (events.length) {
+    events.forEach(e => {
+      msg += `\n${e.type === 'migraine' ? '🧊 Мигрень' : '🔴 Простата'} (${e.time}) — интенсивность ${e.intensity}`;
+      if (e.localization) msg += `, ${e.localization}`;
+      if (e.medications) msg += `\n  💊 ${e.medications}`;
+      if (e.comment) msg += `\n  💬 ${e.comment}`;
+    });
+  }
+  alert(msg);
+}
+
+// ──────────────── HISTORY ────────────────
+function renderHistory() {
+  const list = document.getElementById('historyList');
+  const empty = document.getElementById('histEmpty');
+  const count = document.getElementById('histCount');
+
+  const recs = appData.records;
+  count.textContent = recs.length;
+
+  if (!recs.length) {
+    list.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+
+  list.innerHTML = recs.map(r => {
+    const isMig = r.type === 'migraine';
+    const badge = isMig
+      ? '<span class="tag-badge migraine-badge">🧊 Мигрень</span>'
+      : '<span class="tag-badge prostate-badge">🔴 Простата</span>';
+    const d = new Date(r.date + 'T12:00:00');
+    const dateStr = d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
+    const intensityColor = r.intensity <= 3 ? 'text-emerald-400' : r.intensity <= 6 ? 'text-amber-400' : 'text-red-400';
+    return `
+      <div class="tracker-card rounded-2xl p-3.5 animate-fadeIn">
+        <div class="flex items-start justify-between gap-2">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+              ${badge}
+              <span class="text-xs text-slate-400">${dateStr} ${r.time}</span>
+            </div>
+            <div class="flex items-center gap-3 mb-1">
+              <span class="text-xs text-slate-400">Интенсивность:</span>
+              <span class="text-sm font-bold ${intensityColor}">${r.intensity}/10</span>
+            </div>
+            ${r.localization ? `<div class="text-xs text-slate-400 truncate">📍 ${r.localization}</div>` : ''}
+            ${r.medications ? `<div class="text-xs text-slate-400 truncate">💊 ${r.medications}</div>` : ''}
+            ${r.comment ? `<div class="text-xs text-slate-500 truncate">💬 ${r.comment}</div>` : ''}
+          </div>
+          <button onclick="deleteRecord(${r.id})" class="text-slate-600 hover:text-red-400 transition-colors text-xl flex-shrink-0 leading-none">×</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function deleteRecord(id) {
+  if (!confirm('Удалить эту запись?')) return;
+  appData.records = appData.records.filter(r => r.id !== id);
+  saveData(appData);
+  renderAll();
+  showToast('Запись удалена');
+}
+
+// ──────────────── TODAY EVENTS ────────────────
+function renderTodayEvents() {
+  const todayEvents = appData.records.filter(r => r.date === getTodayKey());
+  const el = document.getElementById('todayEvents');
+  const pulse = document.getElementById('livePulseDot');
+  if (!todayEvents.length) { el.innerHTML = ''; pulse.classList.add('hidden'); return; }
+  pulse.classList.remove('hidden');
+  el.innerHTML = todayEvents.map(e => {
+    const isMig = e.type === 'migraine';
+    return `<div class="flex items-center gap-2 text-xs px-1 py-0.5">
+      <span>${isMig ? '🧊' : '🔴'}</span>
+      <span class="${isMig ? 'text-migraine-light' : 'text-prostate-light'} font-medium">${isMig ? 'Мигрень' : 'Простата'}</span>
+      <span class="text-slate-400">${e.time}</span>
+      <span class="text-slate-500">интенс. ${e.intensity}</span>
+    </div>`;
+  }).join('');
+}
+
+// ──────────────── HEADER ────────────────
+function renderHeader() {
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' });
+  document.getElementById('headerDate').textContent = dateStr;
+  document.getElementById('todayPill').textContent = dateStr;
+}
+
+// ──────────────── EXPORT / IMPORT ────────────────
+function exportJSON() {
+  const blob = new Blob([JSON.stringify(appData, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `health_diary_${getTodayKey()}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Данные экспортированы');
+}
+
+function importJSON(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const imported = JSON.parse(e.target.result);
+      if (!imported.records || !imported.dailyLogs) throw new Error('Неверный формат');
+      if (confirm(`Импортировать данные? (${imported.records.length} записей)\nТекущие данные будут объединены.`)) {
+        // merge
+        const existingIds = new Set(appData.records.map(r => r.id));
+        imported.records.forEach(r => { if (!existingIds.has(r.id)) appData.records.push(r); });
+        Object.assign(appData.dailyLogs, imported.dailyLogs);
+        appData.records.sort((a, b) => b.id - a.id);
+        saveData(appData);
+        renderAll();
+        showToast('Данные импортированы');
+      }
+    } catch (err) {
+      alert('Ошибка: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+// ──────────────── TOAST ────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = '✓ ' + msg;
+  t.style.opacity = '1';
+  t.style.transform = 'translateX(-50%) translateY(0)';
+  setTimeout(() => {
+    t.style.opacity = '0';
+    t.style.transform = 'translateX(-50%) translateY(-8px)';
+  }, 2200);
+}
+
+// ──────────────── RENDER ALL ────────────────
+function renderAll() {
+  renderHeader();
+  renderTrackers();
+  renderTodayEvents();
+  buildCalendar();
+  renderHistory();
+}
+
+// ──────────────── INIT ────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  renderAll();
+  // auto-save trackers on change
+  setInterval(() => { saveData(appData); }, 30000);
+});
+</script>
+</body>
+</html>
